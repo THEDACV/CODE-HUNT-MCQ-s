@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code Hunt Challenge</title>
+    <style>
+        /* CSS Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        button {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        #timer {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e94560;
+            margin-bottom: 20px;
+        }
+
+        #class-selection {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #class-selection label {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 18px;
+        }
+
+        #class-selection select {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Code Hunt Challenge</h1>
+        </header>
+
+        <!-- Class Selection Section -->
+        <div id="class-selection" class="card">
+            <h2>Select Your Class</h2>
+            <select id="class-selector">
+                <option value="">Select Class</option>
+                <option value="1BCA">1BCA</option>
+                <option value="2BCA">2BCA</option>
+                <option value="3BCA">3BCA</option>
+            </select>
+            <button id="continue-btn">Continue</button>
+        </div>
+
+        <!-- Login Section -->
+        <div id="login-section" class="card hidden">
+            <h2>Sign In to Start</h2>
+            <input type="email" id="email" placeholder="Enter your email address" required />
+            <button id="start-btn">Start Challenge</button>
+        </div>
+
+        <!-- Question Section -->
+        <div id="question-section" class="card hidden">
+            <div id="timer">Time Left: <span id="time-left">95</span>s</div>
+            <h3 id="question-text"></h3>
+            <div id="options-container"></div>
+            <button id="next-btn" class="hidden">Next Question</button>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results-section" class="card hidden">
+            <h2>Challenge Complete!</h2>
+            <p>Your Score: <span id="score"></span>/10</p>
+            <p>Time Taken: <span id="time-taken"></span>s</p>
+        </div>
+    </div>
+    <script>
+        // JavaScript Logic
+        const questions = {
+            "1BCA": [
+                {
+                    text: "How do you reverse a string in C++?",
+                    options: [
+                        `C++: void reverseString(string &str) {
+                    int n = str.length();
+                    for (int i = 0; i < n / 2; i++) {
+                        swap(str[i], str[n - i - 1]);
+                    }
+                }`,
+                        `C++: void reverseString(string &str) {
+                    int n = str.length();
+                    for (int i = 0; i < n; i++) {
+                        swap(str[i], str[n - i - 1]);
+                    }
+                }`,
+                        `C++: void reverseString(string &str) {
+                    int n = str.length();
+                    for (int i = 0; i < n / 2; i++) {
+                        swap(str[i], str[i + 1]);
+                    }
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you check if a number is prime in C++?",
+                    options: [
+                        `C++: bool isPrime(int n) {
+                    if (n < 2) return false;
+                    for (int i = 2; i * i <= n; i++) {
+                        if (n % i == 0) return false;
+                    }
+                    return true;
+                }`,
+                        `C++: bool isPrime(int n) {
+                    if (n < 2) return false;
+                    for (int i = 2; i < n; i++) {
+                        if (n % i == 0) return false;
+                    }
+                    return true;
+                }`,
+                        `C++: bool isPrime(int n) {
+                    if (n < 2) return false;
+                    return true;
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you compute the Fibonacci series in C++?",
+                    options: [
+                        `C++: void fibonacci(int n) {
+                    int a = 0, b = 1, c;
+                    for (int i = 0; i < n; i++) {
+                        cout << a << " ";
+                        c = a + b;
+                        a = b;
+                        b = c;
+                    }
+                }`,
+                        `C++: void fibonacci(int n) {
+                    int a = 0, b = 1, c;
+                    for (int i = 0; i < n; i++) {
+                        cout << a << " ";
+                        c = a * b;
+                        a = b;
+                        b = c;
+                    }
+                }`,
+                        `C++: void fibonacci(int n) {
+                    int a = 0, b = 1, c;
+                    for (int i = 0; i < n; i++) {
+                        cout << a << " ";
+                        a = b;
+                        b = c;
+                    }
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you check if a string is a palindrome in C++?",
+                    options: [
+                        `C++: bool isPalindrome(string str) {
+                    for (int i = 0; i < str.length() / 2; i++) {
+                        if (str[i] != str[str.length() - i - 1]) return false;
+                    }
+                    return true;
+                }`,
+                        `C++: bool isPalindrome(string str) {
+                    for (int i = 0; i < str.length(); i++) {
+                        if (str[i] != str[str.length() - i - 1]) return false;
+                    }
+                    return true;
+                }`,
+                        `C++: bool isPalindrome(string str) {
+                    for (int i = 0; i < str.length() / 2; i++) {
+                        if (str[i] == str[str.length() - i - 1]) return false;
+                    }
+                    return true;
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you calculate factorial in C++?",
+                    options: [
+                        `C++: int factorial(int n) {
+                    return (n == 0) ? 1 : n * factorial(n - 1);
+                }`,
+                        `C++: int factorial(int n) {
+                    return (n == 0) ? 1 : n + factorial(n - 1);
+                }`,
+                        `C++: int factorial(int n) {
+                    return (n == 0) ? 1 : n / factorial(n - 1);
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you find the largest element in an array in C++?",
+                    options: [
+                        `C++: int findMax(int arr[], int size) {
+                    int max = arr[0];
+                    for (int i = 1; i < size; i++) {
+                        if (arr[i] > max) {
+                            max = arr[i];
+                        }
+                    }
+                    return max;
+                }`,
+                        `C++: int findMax(int arr[], int size) {
+                    int max = arr[0];
+                    for (int i = 1; i < size; i++) {
+                        if (arr[i] < max) {
+                            max = arr[i];
+                        }
+                    }
+                    return max;
+                }`,
+                        `C++: int findMax(int arr[], int size) {
+                    int max = arr[0];
+                    return max;
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you find the smallest element in an array in C++?",
+                    options: [
+                        `C++: int findMin(int arr[], int size) {
+                    int min = arr[0];
+                    for (int i = 1; i < size; i++) {
+                        if (arr[i] < min) {
+                            min = arr[i];
+                        }
+                    }
+                    return min;
+                }`,
+                        `C++: int findMin(int arr[], int size) {
+                    int min = arr[0];
+                    for (int i = 1; i < size; i++) {
+                        if (arr[i] > min) {
+                            min = arr[i];
+                        }
+                    }
+                    return min;
+                }`,
+                        `C++: int findMin(int arr[], int size) {
+                    int min = arr[0];
+                    return min;
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you calculate the sum of digits in a number in C++?",
+                    options: [
+                        `C++: int sumOfDigits(int n) {
+                    int sum = 0;
+                    while (n > 0) {
+                        sum += n % 10;
+                        n /= 10;
+                    }
+                    return sum;
+                }`,
+                        `C++: int sumOfDigits(int n) {
+                    int sum = 0;
+                    while (n > 0) {
+                        sum += n * 10;
+                        n /= 10;
+                    }
+                }`,
+                        `C++: int sumOfDigits(int n) {
+                    int sum = 0;
+                    return sum;
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you count the number of vowels in a string in C++?",
+                    options: [
+                        `C++: int countVowels(string str) {
+                    int count = 0;
+                    for (char ch : str) {
+                        ch = tolower(ch);
+                        if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u') {
+                            count++;
+                        }
+                    }
+                    return count;
+                }`,
+                        `C++: int countVowels(string str) {
+                    int count = 0;
+                    for (char ch : str) {
+                        if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u') {
+                            count++;
+                        }
+                    }
+                    return count;
+                }`,
+                        `C++: int countVowels(string str) {
+                    int count = 0;
+                    return count;
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you find the GCD using the Euclidean algorithm in C++?",
+                    options: [
+                        `C++: int gcd(int a, int b) {
+                    while (b != 0) {
+                        int temp = b;
+                        b = a % b;
+                        a = temp;
+                    }
+                    return a;
+                }`,
+                        `C++: int gcd(int a, int b) {
+                    while (b != 0) {
+                        int temp = b;
+                        b = a + b;
+                        a = temp;
+                    }
+                    return a;
+                }`,
+                        `C++: int gcd(int a, int b) {
+                    return a;
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+            ],
+            "2BCA": [
+                {
+                    text: "How do you reverse a string?",
+                    options: [
+                        `C: void reverseString(char str[]) {
+                    int n = strlen(str);
+                    for (int i = 0; i < n / 2; i++) {
+                        char temp = str[i];
+                        str[i] = str[n - i - 1];
+                        str[n - i - 1] = temp;
+                    }
+                }`,
+                        `Python: def reverse_string(s):
+                    s = list(s)
+                    for i in range(len(s) // 2):
+                        s[i], s[-i-1] = s[-i-1], s[i]
+                    return "".join(s)`,
+                        `Java: public static void reverseString(char[] str) {
+                    int n = str.length;
+                    for (int i = 0; i < n / 2; i++) {
+                        char temp = str[i];
+                        str[i] = str[n - i - 1];
+                        str[n - i - 1] = temp;
+                    }
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you check if a number is prime?",
+                    options: [
+                        `C: int isPrime(int n) {
+                    if (n < 2) return 0;
+                    for (int i = 2; i * i <= n; i++) {
+                        if (n % i == 0) return 0;
+                    }
+                    return 1;
+                }`,
+                        `Python: def is_prime(n):
+                    if n < 2:
+                        return False
+                    for i in range(2, int(n**0.5) + 1):
+                        if n % i == 0:
+                            return False
+                    return True`,
+                        `Java: static boolean isPrime(int n) {
+                    if (n < 2) return false;
+                    for (int i = 2; i * i <= n; i++) {
+                        if (n % i == 0) return false;
+                    }
+                    return true;
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you compute the Fibonacci series?",
+                    options: [
+                        `C: void fibonacci(int n) {
+                    int a = 0, b = 1, c;
+                    for (int i = 0; i < n; i++) {
+                        printf("%d ", a);
+                        c = a + b;
+                        a = b;
+                        b = c;
+                    }
+                }`,
+                        `Python: def fibonacci(n):
+                    a, b = 0, 1
+                    for _ in range(n):
+                        print(a, end=" ")
+                        a, b = b, a + b`,
+                        `Java: static void fibonacci(int n) {
+                    int a = 0, b = 1, c;
+                    for (int i = 0; i < n; i++) {
+                        System.out.print(a + " ");
+                        c = a + b;
+                        a = b;
+                        b = c;
+                    }
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you check if a string is a palindrome?",
+                    options: [
+                        `C: int isPalindrome(char str[]) {
+                    int len = strlen(str);
+                    for (int i = 0; i < len / 2; i++) {
+                        if (str[i] != str[len - i - 1]) return 0;
+                    }
+                    return 1;
+                }`,
+                        `Python: def is_palindrome(s):
+                    return s == s[::-1]`,
+                        `Java: static boolean isPalindrome(String str) {
+                    for (int i = 0; i < str.length() / 2; i++) {
+                        if (str.charAt(i) != str.charAt(str.length() - i - 1)) return false;
+                    }
+                    return true;
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you calculate factorial?",
+                    options: [
+                        `C: int factorial(int n) {
+                    return (n == 0) ? 1 : n * factorial(n - 1);
+                }`,
+                        `Python: def factorial(n):
+                    return 1 if n == 0 else n * factorial(n - 1)`,
+                        `Java: static int factorial(int n) {
+                    return (n == 0) ? 1 : n * factorial(n - 1);
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you find the largest element in an array?",
+                    options: [
+                        `C: int findMax(int arr[], int size) {
+                    int max = arr[0];
+                    for (int i = 1; i < size; i++) {
+                        if (arr[i] > max) {
+                            max = arr[i];
+                        }
+                    }
+                    return max;
+                }`,
+                        `Python: def find_max(arr):
+                    return max(arr)`,
+                        `Java: static int findMax(int[] arr) {
+                    int max = arr[0];
+                    for (int i = 1; i < arr.length; i++) {
+                        if (arr[i] > max) {
+                            max = arr[i];
+                        }
+                    }
+                    return max;
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you find the smallest element in an array?",
+                    options: [
+                        `C: int findMin(int arr[], int size) {
+                    int min = arr[0];
+                    for (int i = 1; i < size; i++) {
+                        if (arr[i] < min) {
+                            min = arr[i];
+                        }
+                    }
+                    return min;
+                }`,
+                        `Python: def find_min(arr):
+                    return min(arr)`,
+                        `Java: static int findMin(int[] arr) {
+                    int min = arr[0];
+                    for (int i = 1; i < arr.length; i++) {
+                        if (arr[i] < min) {
+                            min = arr[i];
+                        }
+                    }
+                    return min;
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you calculate the sum of digits?",
+                    options: [
+                        `C: int sumOfDigits(int n) {
+                    int sum = 0;
+                    while (n > 0) {
+                        sum += n % 10;
+                        n /= 10;
+                    }
+                    return sum;
+                }`,
+                        `Python: def sum_of_digits(n):
+                    return sum(int(digit) for digit in str(n))`,
+                        `Java: static int sumOfDigits(int n) {
+                    int sum = 0;
+                    while (n > 0) {
+                        sum += n % 10;
+                        n /= 10;
+                    }
+                    return sum;
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you count the number of vowels?",
+                    options: [
+                        `C: int countVowels(char str[]) {
+                    int count = 0;
+                    for (int i = 0; str[i] != '\\0'; i++) {
+                        char ch = tolower(str[i]);
+                        if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u') {
+                            count++;
+                        }
+                    }
+                    return count;
+                }`,
+                        `Python: def count_vowels(s):
+                    return sum(1 for ch in s.lower() if ch in "aeiou")`,
+                        `Java: static int countVowels(String str) {
+                    int count = 0;
+                    for (char ch : str.toLowerCase().toCharArray()) {
+                        if ("aeiou".indexOf(ch) != -1) {
+                            count++;
+                        }
+                    }
+                    return count;
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you find the GCD (Greatest Common Divisor)?",
+                    options: [
+                        `C: int gcd(int a, int b) {
+                    while (b != 0) {
+                        int temp = b;
+                        b = a % b;
+                        a = temp;
+                    }
+                    return a;
+                }`,
+                        `Python: def gcd(a, b):
+                    while b:
+                        a, b = b, a % b
+                    return a`,
+                        `Java: static int gcd(int a, int b) {
+                    while (b != 0) {
+                        int temp = b;
+                        b = a % b;
+                        a = temp;
+                    }
+                    return a;
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+            ],
+            "3BCA": [
+                {
+                    text: "How do you reverse a string?",
+                    options: [
+                        `Python: def reverse_string(s):
+                    s = list(s)
+                    for i in range(len(s) // 2):
+                        s[i], s[-i-1] = s[-i-1], s[i]
+                    return "".join(s)`,
+                        `Java: public static void reverseString(char[] str) {
+                    int n = str.length;
+                    for (int i = 0; i < n / 2; i++) {
+                        char temp = str[i];
+                        str[i] = str[n - i - 1];
+                        str[n - i - 1] = temp;
+                    }
+                }`,
+                                        `C: void reverseString(char str[]) {
+                    int n = strlen(str);
+                    for (int i = 0; i < n / 2; i++) {
+                        char temp = str[i];
+                        str[i] = str[n - i - 1];
+                        str[n - i - 1] = temp;
+                    }
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you check if a number is prime?",
+                    options: [
+                        `Python: def is_prime(n):
+                    if n < 2:
+                        return False
+                    for i in range(2, int(n**0.5) + 1):
+                        if n % i == 0:
+                            return False
+                    return True`,
+                        `Java: static boolean isPrime(int n) {
+                    if (n < 2) return false;
+                    for (int i = 2; i * i <= n; i++) {
+                        if (n % i == 0) return false;
+                    }
+                    return true;
+                }`,
+                    `C: int isPrime(int n) {
+                    if (n < 2) return 0;
+                    for (int i = 2; i * i <= n; i++) {
+                        if (n % i == 0) return 0;
+                    }
+                    return 1;
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you compute the Fibonacci series?",
+                    options: [
+                        `Python: def fibonacci(n):
+                    a, b = 0, 1
+                    for _ in range(n):
+                        print(a, end=" ")
+                        a, b = b, a + b`,
+                        `Java: static void fibonacci(int n) {
+                    int a = 0, b = 1, c;
+                    for (int i = 0; i < n; i++) {
+                        System.out.print(a + " ");
+                        c = a + b;
+                        a = b;
+                        b = c;
+                    }
+                }`,
+                `C: void fibonacci(int n) {
+                    int a = 0, b = 1, c;
+                    for (int i = 0; i < n; i++) {
+                        printf("%d ", a);
+                        c = a + b;
+                        a = b;
+                        b = c;
+                    }
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you check if a string is a palindrome?",
+                    options: [
+                        `Python: def is_palindrome(s):
+                    return s == s[::-1]`,
+                        `Java: static boolean isPalindrome(String str) {
+                    for (int i = 0; i < str.length() / 2; i++) {
+                        if (str.charAt(i) != str.charAt(str.length() - i - 1)) return false;
+                    }
+                    return true;
+                }`,
+                `C: int isPalindrome(char str[]) {
+                    int len = strlen(str);
+                    for (int i = 0; i < len / 2; i++) {
+                        if (str[i] != str[len - i - 1]) return 0;
+                    }
+                    return 1;
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you calculate factorial?",
+                    options: [
+                        `Python: def factorial(n):
+                    return 1 if n == 0 else n * factorial(n - 1)`,
+                        `Java: static int factorial(int n) {
+                    return (n == 0) ? 1 : n * factorial(n - 1);
+                }`,
+                `C: int factorial(int n) {
+                    return (n == 0) ? 1 : n * factorial(n - 1);
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you find the largest element in an array?",
+                    options: [
+                        `Python: def find_max(arr):
+                    return max(arr)`,
+                        `Java: static int findMax(int[] arr) {
+                    int max = arr[0];
+                    for (int i = 1; i < arr.length; i++) {
+                        if (arr[i] > max) {
+                            max = arr[i];
+                        }
+                    }
+                    return max;
+                }`,
+                `C: int findMax(int arr[], int size) {
+                    int max = arr[0];
+                    for (int i = 1; i < size; i++) {
+                        if (arr[i] > max) {
+                            max = arr[i];
+                        }
+                    }
+                    return max;
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you find the smallest element in an array?",
+                    options: [
+                        `Python: def find_min(arr):
+                    return min(arr)`,
+                        `Java: static int findMin(int[] arr) {
+                    int min = arr[0];
+                    for (int i = 1; i < arr.length; i++) {
+                        if (arr[i] < min) {
+                            min = arr[i];
+                        }
+                    }
+                    return min;
+                }`,
+                `C: int findMin(int arr[], int size) {
+                    int min = arr[0];
+                    for (int i = 1; i < size; i++) {
+                        if (arr[i] < min) {
+                            min = arr[i];
+                        }
+                    }
+                    return min;
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you calculate the sum of digits?",
+                    options: [
+                        `Python: def sum_of_digits(n):
+                    return sum(int(digit) for digit in str(n))`,
+                        `Java: static int sumOfDigits(int n) {
+                    int sum = 0;
+                    while (n > 0) {
+                        sum += n % 10;
+                        n /= 10;
+                    }
+                    return sum;
+                }`,
+                `C: int sumOfDigits(int n) {
+                    int sum = 0;
+                    while (n > 0) {
+                        sum += n % 10;
+                        n /= 10;
+                    }
+                    return sum;
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you count the number of vowels?",
+                    options: [
+                        `Python: def count_vowels(s):
+                    return sum(1 for ch in s.lower() if ch in "aeiou")`,
+                        `Java: static int countVowels(String str) {
+                    int count = 0;
+                    for (char ch : str.toLowerCase().toCharArray()) {
+                        if ("aeiou".indexOf(ch) != -1) {
+                            count++;
+                        }
+                    }
+                    return count;
+                }`,
+                `C: int countVowels(char str[]) {
+                    int count = 0;
+                    for (int i = 0; str[i] != '\\0'; i++) {
+                        char ch = tolower(str[i]);
+                        if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u') {
+                            count++;
+                        }
+                    }
+                    return count;
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+                {
+                    text: "How do you find the GCD (Greatest Common Divisor)?",
+                    options: [
+                        `Python: def gcd(a, b):
+                    while b:
+                        a, b = b, a % b
+                    return a`,
+                        `Java: static int gcd(int a, int b) {
+                    while (b != 0) {
+                        int temp = b;
+                        b = a % b;
+                        a = temp;
+                    }
+                    return a;
+                }`,
+                `C: int gcd(int a, int b) {
+                    while (b != 0) {
+                        int temp = b;
+                        b = a % b;
+                        a = temp;
+                    }
+                    return a;
+                }`,
+                    ],
+                    correctIndex: 0,
+                },
+            ],
+        }
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let timeLeft = 95;
+        let selectedClass = "";
+        let currentQuestions = [];
+        const classSelectionSection = document.getElementById("class-selection");
+        const loginSection = document.getElementById("login-section");
+        const questionSection = document.getElementById("question-section");
+        const resultsSection = document.getElementById("results-section");
+        const classSelector = document.getElementById("class-selector");
+        const continueBtn = document.getElementById("continue-btn");
+        const emailInput = document.getElementById("email");
+        const startBtn = document.getElementById("start-btn");
+        const timerDisplay = document.getElementById("time-left");
+        const questionText = document.getElementById("question-text");
+        const optionsContainer = document.getElementById("options-container");
+        const nextBtn = document.getElementById("next-btn");
+        const scoreDisplay = document.getElementById("score");
+        const timeTakenDisplay = document.getElementById("time-taken");
+        let timer;
+        continueBtn.addEventListener("click", () => {
+            selectedClass = classSelector.value;
+            if (!selectedClass) {
+                alert("Please select your class.");
+                return;
+            }
+            // Dynamically assign questions based on class selection
+            if (selectedClass === "1BCA") {
+                currentQuestions = questions["1BCA"];
+            } else if (selectedClass === "2BCA") {
+                currentQuestions = questions["2BCA"];
+            } else if (selectedClass === "3BCA") {
+                currentQuestions = questions["3BCA"];
+            }
+            //Hide class selection and show login
+            classSelectionSection.classList.add("hidden");
+            loginSection.classList.remove("hidden");
+            // Reset question index when a new class is selected
+            currentQuestionIndex = 0;
+        });
+        startBtn.addEventListener("click", () => {
+            if (!emailInput.value) {
+                alert("Please enter a valid email.");
+                return;
+            }
+            loginSection.classList.add("hidden");  // ...existing code...
+startBtn.addEventListener("click", () => {
+    if (!emailInput.value) {
+        alert("Please enter a valid email.");
+        return;
+    }
+    loginSection.classList.add("hidden");
+    questionSection.classList.remove("hidden");
+    startTimer();
+    loadQuestion();
+});
+
+function startTimer() {
+    timer = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            endQuiz();
+        }
+    }, 1000);
+}
+
+function loadQuestion() {
+    const question = currentQuestions[currentQuestionIndex];
+    questionText.textContent = question.text;
+
+    optionsContainer.innerHTML = "";
+    question.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.textContent = option;
+        button.addEventListener("click", () => checkAnswer(index));
+        optionsContainer.appendChild(button);
+    });
+
+    nextBtn.classList.add("hidden");
+    if (currentQuestionIndex === currentQuestions.length - 1) {
+        nextBtn.textContent = "Finish";
+    } else {
+        nextBtn.textContent = "Next";
+    }
+
+    nextBtn.onclick = () => {
+        currentQuestionIndex++;
+        if (currentQuestionIndex >= currentQuestions.length) {
+            endQuiz();
+        } else {
+            loadQuestion();
+        }
+    };
+
+    nextBtn.classList.remove("hidden");
+}
+
+function checkAnswer(selectedIndex) {
+    const question = currentQuestions[currentQuestionIndex];
+    if (selectedIndex === question.correctIndex) {
+        score++;
+        alert("Correct!");
+    } else {
+        alert(`Incorrect. The correct answer is ${question.options[question.correctIndex]}`);
+    }
+
+    nextBtn.classList.remove("hidden");
+}
+
+function endQuiz() {
+    clearInterval(timer);
+
+    questionSection.classList.add("hidden");
+    resultsSection.classList.remove("hidden");
+
+    scoreDisplay.textContent = score.toString();
+    timeTakenDisplay.textContent = (95 - timeLeft).toString();
+}
+
